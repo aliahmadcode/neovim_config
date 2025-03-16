@@ -15,6 +15,6 @@ return {
         ignore = false,
       }
     }
-    vim.keymap.set("n", "<A-e>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "<A-e>", ":NvimTreeToggle<CR>:lua ColorMyPencils()<CR>", { noremap = true, silent = true })
   end
 }
