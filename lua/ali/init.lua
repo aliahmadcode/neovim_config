@@ -2,37 +2,6 @@ require("ali.set")
 require("ali.remap")
 require("ali.lazy_init")
 
---[[
--- Buffer and File Events:
-    "BufEnter": Triggered when entering a buffer.
-    "BufLeave": Triggered when leaving a buffer.
-    "BufWritePre": Before writing a buffer to a file.
-    "BufWritePost": After writing a buffer to a file.
-    "BufReadPre": Before reading a buffer.
-    "BufReadPost": After reading a buffer.
--- Window Events:
-    "WinEnter": Triggered when entering a window.
-    "WinLeave": Triggered when leaving a window.
--- Tab Events:
-    "TabEnter": Triggered when entering a tab page.
-    "TabLeave": Triggered when leaving a tab page.
--- Cursor Events:
-    "CursorMoved": Triggered when the cursor moves.
-    "CursorMovedI": Triggered when the cursor moves in Insert mode.
--- File Type and Syntax Events:
-    "FileType": Triggered when a file's type is detected.
-    "Syntax": Triggered when setting syntax.
--- Editor Lifecycle Events:
-    "VimEnter": When Neovim starts.
-    "VimLeave": When Neovim is closing.
--- Colorscheme Events:
-    "ColorScheme": After a colorscheme is applied.
-    "ColorSchemePre": Before a colorscheme is applied.
---
- ]]
-
-
-
 vim.cmd([[
   highlight CodeiumSuggestion guifg=#888888
 ]])
@@ -69,18 +38,6 @@ autocmd({ "BufWritePre" }, {
   group = AliGroup,
   pattern = "*",
   command = [[%s/\s\+$//e]],
-})
-
-
-autocmd('BufEnter', {
-  group = AliGroup,
-  callback = function()
-    if vim.bo.filetype == "zig" then
-      vim.cmd.colorscheme("tokyonight-night")
-    else
-      vim.cmd.colorscheme("rose-pine-main")
-    end
-  end
 })
 
 
@@ -127,6 +84,9 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
   pattern = "*",
   callback = function()
+    vim.defer_fn(function()
+      ColorMyPencils()
+    end, 0)
     vim.api.nvim_set_hl(0, "GitSignsAdd", { fg = "#004d00" })
     vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#4D3600" })
     vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#F44747" })
