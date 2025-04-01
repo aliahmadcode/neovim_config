@@ -1,9 +1,11 @@
 return {
-  'jose-elias-alvarez/null-ls.nvim',
+  'nvimtools/none-ls.nvim',
   config = function()
-    require('null-ls').setup({
+    local none_ls = require('none-ls')
+
+    none_ls.setup({
       sources = {
-        require('null-ls').builtins.formatting.prettier.with({
+        none_ls.builtins.formatting.prettier.with({
           extra_args = { "--tab-width", "2" }
         })
       },
