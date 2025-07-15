@@ -1,4 +1,4 @@
-vim.g.mapleader = ";"
+vim.g.mapleader = " "
 vim.keymap.set("n", "<C-s>", ":lua vim.lsp.buf.format()<CR>:wa<CR>")
 
 vim.api.nvim_set_keymap('n', '<C-a>', 'ggVG', { noremap = true, silent = true })
@@ -93,3 +93,9 @@ vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.dotfiles/nvim/.config/nvim/lua/ali
 vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");
 
 vim.cmd([[autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]])
+
+vim.keymap.set("n", "<leader>c", function()
+  require("telescope.builtin").find_files({
+    cwd = vim.fn.stdpath("config")
+  })
+end)

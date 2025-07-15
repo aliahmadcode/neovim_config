@@ -206,7 +206,7 @@ return {
         ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
         ["<C-Space>"] = cmp.mapping.complete(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
         ['<Tab>'] = cmp.mapping(function(fallback)
           if luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
@@ -256,19 +256,25 @@ return {
 
     vim.diagnostic.config({
       update_in_insert = false,
-      signs = false,
-      virtual_text = {
-        severity = { min = vim.diagnostic.severity.WARN }, -- Ignore spelling (INFO level)
+      signs = true,
+      virtual_text = false,
+      underline = {
+        severity = { min = vim.diagnostic.severity.WARN },
       },
-      underline = false,
-      float = {
-        focusable = false,
-        style = "minimal",
-        border = "rounded",
-        source = "always",
-        header = "",
-        prefix = "",
-      },
+    })
+
+    vim.api.nvim_create_autocmd("CursorHold", {
+      callback = function()
+        vim.diagnostic.open_float(nil, {
+          focusable = false,
+          border = "none",
+          source = "always",
+          scope = "cursor",
+          style = "minimal",
+          header = "",
+          prefix = "",
+        })
+      end,
     })
   end
 }
