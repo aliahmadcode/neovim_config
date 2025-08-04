@@ -206,7 +206,7 @@ return {
         ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
         ["<C-Space>"] = cmp.mapping.complete(),
-        -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
         ['<Tab>'] = cmp.mapping(function(fallback)
           if luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
@@ -269,10 +269,17 @@ return {
           focusable = false,
           border = "none",
           source = "always",
-          scope = "cursor",
+          scope = "line",
           style = "minimal",
           header = "",
           prefix = "",
+          close_events = {
+            "CursorMoved",
+            "CursorMovedI",
+            "InsertEnter",
+            "BufLeave",
+            "WinLeave",
+          },
         })
       end,
     })
