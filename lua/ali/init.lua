@@ -2,6 +2,15 @@ require("ali.set")
 require("ali.remap")
 require("ali.lazy_init")
 
+local states = require("ali.state")
+
+vim.keymap.set("n", "<C-s>", function()
+  if states.should_format then
+    vim.cmd("lua vim.lsp.buf.format()")
+  end
+  vim.cmd("wa")
+end)
+
 vim.cmd([[
   highlight CodeiumSuggestion guifg=#888888
 ]])
@@ -51,7 +60,7 @@ autocmd('LspAttach', {
     end, opts)
     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
     vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-    vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
+    vim.keymap.set("n", "<leader>;", function() vim.lsp.buf.code_action() end, opts)
     vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
     vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
@@ -70,7 +79,14 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function()
     local filepath = vim.fn.expand("%:p")
     vim.fn.jobstart({ "evince", filepath }, { detach = true })
-    vim.cmd("bd")
+    vim.cmd("q")
+  end
+})
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = "*.json",
+  callback = function()
+    vim.cmd("%!prettier --parser json")
   end
 })
 

@@ -37,21 +37,14 @@ return {
         "lua_ls",
         "rust_analyzer",
         "gopls",
-        "jdtls",  -- Java language server
-        "clangd", -- C/C++ language server
+        "jdtls",
+        "clangd",
         "asm_lsp",
         "html",
         "cssls",
         "tailwindcss",
-        "eslint",
-        "ts_ls", -- TypeScript/JSX language server
+        "ts_ls",
       },
-      require("lspconfig").ts_ls.setup({
-        capabilities = capabilities,
-        filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
-      }),
-
-
       handlers = {
         function(server_name) -- default handler (optional)
           require("lspconfig")[server_name].setup {
@@ -59,7 +52,6 @@ return {
           }
         end,
 
-        -- Add specific ts_ls configuration outside the handlers table
         ["ts_ls"] = function()
           require("lspconfig").ts_ls.setup({
             capabilities = capabilities,
@@ -156,15 +148,39 @@ return {
           local lspconfig = require("lspconfig")
           lspconfig.tailwindcss.setup {
             capabilities = capabilities,
+            filetypes = {
+              "html", "css", "scss", "javascript", "javascriptreact",
+              "typescript", "typescriptreact", "svelte", "vue"
+            },
+            init_options = {
+              userLanguages = {
+                typescript = "javascript",
+                typescriptreact = "javascript",
+              },
+            },
+            settings = {
+              tailwindCSS = {
+                includeLanguages = {
+                  typescript = "javascript",
+                  typescriptreact = "javascript",
+                },
+                experimental = {
+                  classRegex = {
+                    "className\\s*=\\s*\"([^\"]*)\"",
+                    "className\\s*=\\s*'([^']*)'",
+                    "class\\s*=\\s*\"([^\"]*)\"",
+                    "class\\s*=\\s*'([^']*)'",
+                    "clsx\\(([^)]*)\\)",
+                    "cn\\(([^)]*)\\)",
+                    "cva\\(([^)]*)\\)",
+                    "tw`([^`]*)`",
+                    "className\\s*=\\s*`([^`]*)`",
+                  },
+                },
+              },
+            },
           }
         end,
-        eslint = function()
-          local lspconfig = require("lspconfig")
-          lspconfig.eslint.setup {
-            capabilities = capabilities,
-          }
-        end,
-
       }
     })
 
