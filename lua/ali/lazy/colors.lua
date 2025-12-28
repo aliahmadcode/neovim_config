@@ -1,11 +1,6 @@
 function ColorMyPencils(color)
   color = color or "rose-pine-main"
   vim.cmd.colorscheme(color)
-
-  vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-
-  vim.cmd("highlight GitSignsAdd guifg=#004d00")
   vim.cmd("highlight GitSignsChange guifg=#4D3600")
   vim.cmd("highlight GitSignsDelete guifg=#F44747")
 end

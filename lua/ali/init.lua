@@ -2,15 +2,6 @@ require("ali.set")
 require("ali.remap")
 require("ali.lazy_init")
 
-local states = require("ali.state")
-
-vim.keymap.set("n", "<C-s>", function()
-  if states.should_format then
-    vim.cmd("lua vim.lsp.buf.format()")
-  end
-  vim.cmd("wa")
-end)
-
 vim.cmd([[
   highlight CodeiumSuggestion guifg=#888888
 ]])
@@ -91,9 +82,9 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
-  pattern = { "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp", "*.tiff" },
+  pattern = { "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp", "*.tiff", "*.ppm" },
   callback = function()
-    local filepath = vim.fn.expand("%:p") -- gives me the complete path of the current file
+    local filepath = vim.fn.expand("%:p")
     vim.fn.jobstart({ "display", filepath }, { detach = true })
     vim.cmd("bd")
   end

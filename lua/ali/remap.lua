@@ -1,6 +1,8 @@
 vim.g.mapleader = " "
 
 vim.keymap.set("n", "<C-g>", ":lua vim.lsp.buf.code_action()<CR>")
+vim.keymap.set("n", "<C-f>", function() vim.cmd("lua vim.lsp.buf.format()") end)
+vim.keymap.set("n", "<C-s>", function() vim.cmd("wa") end)
 
 vim.api.nvim_set_keymap('n', '<C-a>', 'ggVG', { noremap = true, silent = true })
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
